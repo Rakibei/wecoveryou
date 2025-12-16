@@ -3,7 +3,6 @@ import { db } from '$lib/server/db';
 import { iphonerepair, ipadrepair } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async () => {
-
 	const iphonerepairs = await db.select().from(iphonerepair);
 	const ipadrepairs = await db.select().from(ipadrepair);
 
@@ -12,4 +11,3 @@ export const load: PageServerLoad = async () => {
 		ipadrepairs: ipadrepairs
 	};
 };
-

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';	
-	import '@fortawesome/fontawesome-free/css/all.min.css'
+	import { goto } from '$app/navigation';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import wecoveryou from '$lib/assets/wecoveryou.png';
@@ -79,7 +79,8 @@
 		width: 200px;
 	}
 
-	#cart, #user {
+	#cart,
+	#user {
 		margin-left: 20px;
 		color: white;
 	}

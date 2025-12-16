@@ -12,15 +12,14 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#each data.users as u}
-		<tr>
-			<td>{u.id}</td>
-			<td>{u.age}</td>
-		</tr>
-	{/each}
+		{#each data.users as u}
+			<tr>
+				<td>{u.id}</td>
+				<td>{u.age}</td>
+			</tr>
+		{/each}
 	</tbody>
 </table>
 
 <style>
-
 </style>

@@ -7,13 +7,10 @@ export const load: PageServerLoad = async ({ url }) => {
 
 	const users = await db.select().from(user);
 
-	const filtered = q
-		? users.filter(u => u.age.toString().includes(q))
-		: users;
+	const filtered = q ? users.filter((u) => u.age.toString().includes(q)) : users;
 
 	return {
 		users: filtered,
 		query: q
 	};
 };
-

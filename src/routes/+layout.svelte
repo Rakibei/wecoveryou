@@ -4,6 +4,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import wecoveryou from '$lib/assets/wecoveryou.png';
+	import Warning from './warning.svelte'
 
 	let query = $state('');
 
@@ -42,6 +43,8 @@
 		<span>Login</span>
 	</a>
 </div>
+
+<Warning />
 
 {@render children()}
 

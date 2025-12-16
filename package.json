@@ -53,6 +53,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^7.1.0",
+		"@supabase/supabase-js": "^2.87.3",
 		"postgres": "^3.4.7"
 	}
 }

@@ -1,6 +1,15 @@
-import { pgTable, serial, integer, text } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, text } from 'drizzle-orm/pg-core';
 
-export const user = pgTable('user', { id: serial('id').primaryKey(), age: integer('age').notNull() });
+export const users = pgTable('users', {
+	id: serial('id').primaryKey(),
+	username: varchar('username', { length: 256 }).unique().notNull(),
+	password: varchar('password', { length: 256 }).notNull(),
+	email: varchar('email', { length: 256 }).unique(),
+	fullname: varchar('fullname', { length: 256 }),
+	phone: varchar('phone', { length: 20 }),
+	address: text('address'),
+	role: varchar('role', { length: 50 }).notNull().default('user')
+});
 
 export const iphonerepair = pgTable('phonerepair', {
 	id: serial('id').primaryKey(),

@@ -4,7 +4,8 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import wecoveryou from '$lib/assets/wecoveryou.png';
-	import Warning from './warning.svelte'
+	import Warning from './warning.svelte';
+	import { page } from '$app/state';
 
 	let query = $state('');
 
@@ -13,6 +14,7 @@
 			goto(`/search?q=${encodeURIComponent(query)}`);
 		}
 	}
+
 	let { children } = $props();
 </script>
 
@@ -38,13 +40,15 @@
 		<i class="fa-solid fa-cart-shopping"></i>
 		<span>Beløb: 0,00 DKK</span>
 	</a>
-	<a title="User" id="user" href="/">
+	<a title="User" id="user" href="/login">
 		<i class="fa-solid fa-user"></i>
 		<span>Login</span>
 	</a>
 </div>
 
-<Warning />
+{#if page.url.pathname === '/'}
+	<Warning />
+{/if}
 
 {@render children()}
 

@@ -12,14 +12,14 @@
 	<thead>
 		<tr>
 			<th>ID</th>
-			<th>Age</th>
+			<th>Username</th>
 		</tr>
 	</thead>
 	<tbody>
 		{#each data.users as u}
 			<tr>
 				<td>{u.id}</td>
-				<td>{u.age}</td>
+				<td>{u.username}</td>
 			</tr>
 		{/each}
 	</tbody>

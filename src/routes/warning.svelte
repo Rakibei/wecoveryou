@@ -8,8 +8,8 @@
 		justify-content: center;
 		align-items: center;
 		background-color: rgb(105, 0, 0);
-        color: white;
-        padding: 10px;
+		color: white;
+		padding: 10px;
 		border-top: 1px solid #333;
 	}
 </style>

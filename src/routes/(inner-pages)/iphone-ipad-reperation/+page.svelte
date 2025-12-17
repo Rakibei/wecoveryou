@@ -33,13 +33,13 @@
 		</p>
 	</div>
 	<div class="mb-5 flex items-center gap-4 px-10">
-		<div class="flex-grow">
+		<div class="grow">
 			<input
-                type="text"
-                placeholder="Søg efter model..."
-                class="w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none"
-                bind:value={search}
-            />
+				type="text"
+				placeholder="Søg efter model..."
+				class="w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				bind:value={search}
+			/>
 		</div>
 		<div class="flex space-x-1">
 			<div>
@@ -74,7 +74,9 @@
 				<div class="grid grid-cols-1 gap-5 px-8 sm:grid-cols-2 lg:grid-cols-4">
 					{#each filteredIphones as p}
 						<div class="overflow-hidden rounded-lg border border-gray-200 bg-white text-sm">
-							<div class="rounded-t-lg bg-gradient-to-b from-blue-400 to-blue-600 py-1 text-center text-lg font-bold text-white">
+							<div
+								class="rounded-t-lg bg-linear-to-b from-blue-400 to-blue-600 py-1 text-center text-lg font-bold text-white"
+							>
 								<h2>{p.name}</h2>
 							</div>
 							<div class="price-list">
@@ -122,7 +124,9 @@
 				<div class="grid grid-cols-1 gap-5 px-8 sm:grid-cols-2 lg:grid-cols-3">
 					{#each filteredIpads as p}
 						<div class="overflow-hidden rounded-lg border border-gray-200 bg-white text-sm">
-							<div class="rounded-t-lg bg-gradient-to-b from-emerald-500 to-emerald-600 py-1 text-center text-lg font-bold text-white">
+							<div
+								class="rounded-t-lg bg-linear-to-b from-emerald-500 to-emerald-600 py-1 text-center text-lg font-bold text-white"
+							>
 								{p.name}
 							</div>
 							<div class="price-list">
@@ -161,7 +165,7 @@
 </div>
 
 <style>
-    .active {
+	.active {
 		background-color: #0078d4;
 		color: white;
 	}

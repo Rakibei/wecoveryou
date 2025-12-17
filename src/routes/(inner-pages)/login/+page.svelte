@@ -119,4 +119,10 @@
 	.login-form button:hover {
 		background-color: #0056b3;
 	}
+
+	.login-error {
+		color: red;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
 </style>

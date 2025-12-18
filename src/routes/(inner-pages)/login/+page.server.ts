@@ -1,6 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
-import { signIn } from '$lib/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.session) {
@@ -19,11 +18,11 @@ export const actions: Actions = {
 			return fail(400, { error: 'Ugyldige loginoplysninger' });
 		}
 
-		const result = await signIn('credentials', {
-			username,
-			password,
+		const result = await authSignIn({
+			provider: 'Credentials',
+			data: { username, password },
 			redirect: false
-		});
+		} as SignInOptions);
 
 		if (!result?.ok) {
 			return fail(400, {

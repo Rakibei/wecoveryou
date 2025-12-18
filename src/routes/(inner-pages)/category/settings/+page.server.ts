@@ -1,11 +1,11 @@
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { users } from '$lib/server/db/schema';
+import { user } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async () => {
-	const user = await db.select().from(users);
+	const u = await db.select().from(user);
 
 	return {
-		user
+		users: u
 	};
 };

@@ -15,14 +15,14 @@
 				</div>
 			</div>
 			<div class="login-form">
-				<form method="POST" use:enhance>
+				<form method="POST" action="?/login" use:enhance>
 					<label for="username">Brugernavn</label>
 					<input type="text" id="username" name="username" required />
 					<label for="password">Kodeord</label>
 					<input type="password" id="password" name="password" required />
 					<span id="login-options">
 						<span id="login-checkbox">
-							<input type="checkbox" id="remember" name="remember" />
+							<input type="checkbox" id="remember" name="remember" value="on"/>
 							<label for="remember">Husk Login</label>
 						</span>
 						<a href="/forgot-password">Glemt Kodeord?</a>

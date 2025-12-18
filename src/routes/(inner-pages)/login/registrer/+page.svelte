@@ -9,9 +9,9 @@
 	<p class="error">{form.error}</p>
 {/if}
 
-<form method="POST" use:enhance>
+<form method="POST" action="?/register" use:enhance>
 	<label for="username">Brugernavn</label>
-	<input id="username" name="username" required />
+	<input id="username" name="username" required minlength="3" />
 
 	<label for="email">Email</label>
 	<input id="email" name="email" type="email" required />

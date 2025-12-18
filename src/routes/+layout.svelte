@@ -6,6 +6,7 @@
 	import wecoveryou from '$lib/assets/wecoveryou.png';
 	import Warning from './warning.svelte';
 	import { page } from '$app/state';
+	import type { PageServerData } from './$types';
 
 	let query = $state('');
 
@@ -15,7 +16,10 @@
 		}
 	}
 
-	let { children } = $props();
+	let { data, children } = $props<{
+		data: PageServerData;
+		children: () => any;
+	}>();
 </script>
 
 <svelte:head>
@@ -42,7 +46,11 @@
 	</a>
 	<a title="User" id="user" href="/login">
 		<i class="fa-solid fa-user"></i>
-		<span>Login</span>
+		{#if data.user}
+			<span>{data.user.username}</span>
+		{:else}
+			<span>Login</span>
+		{/if}
 	</a>
 </div>
 

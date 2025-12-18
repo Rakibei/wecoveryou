@@ -1,13 +1,13 @@
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { users } from '$lib/server/db/schema';
+import { user } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const q = url.searchParams.get('q');
 
-	const user = await db.select().from(users);
+	const u = await db.select().from(user);
 
-	const filtered = q ? user.filter((u) => u.username.toString().includes(q)) : user;
+	const filtered = q ? u.filter((u) => u.username.toString().includes(q.toLowerCase())) : u;
 
 	return {
 		users: filtered,

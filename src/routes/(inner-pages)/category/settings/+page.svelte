@@ -12,7 +12,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.user as u}
+		{#each data.users as u}
 			<tr>
 				<td>{u.id}</td>
 				<td>{u.username}</td>

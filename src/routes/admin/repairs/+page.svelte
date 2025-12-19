@@ -2,12 +2,15 @@
 	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { dndzone } from 'svelte-dnd-action';
 
 	export let data: PageData;
 
 	let tab: 'iphone' | 'ipad' = 'iphone';
 	let editing: any = null;
 	let adding: 'iphone' | 'ipad' | null = null;
+	let iphones = [...data.iphones].sort((a, b) => a.position - b.position);
+	let ipads = [...data.ipads].sort((a, b) => a.position - b.position);
 
 	function price(value: string | null) {
 		return value === null ? 'N/A' : `${value}`;
@@ -15,13 +18,50 @@
 
 	let search = '';
 
-	$: filteredIphones = data.iphones.filter(phone =>
+	$: {
+		iphones = [...data.iphones].sort((a, b) => a.position - b.position);
+		ipads = [...data.ipads].sort((a, b) => a.position - b.position);
+	}
+
+	$: filteredIphones = iphones.filter(phone =>
 		phone.name.toLowerCase().includes(search.toLowerCase())
 	);
 
-	$: filteredIpads = data.ipads.filter(pad =>
+	$: filteredIpads = ipads.filter(pad =>
 		pad.name.toLowerCase().includes(search.toLowerCase())
 	);
+
+	async function handleIphoneReorder(e: any) {
+		iphones = e.detail.items;
+
+		const payload = iphones.map((phone, index) => ({
+			id: phone.id,
+			position: index
+		}));
+
+		await fetch('/admin/repairs?type=iphone', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload)
+		});
+		await invalidateAll();
+	}
+
+	async function handleIpadReorder(e: any) {
+		ipads = e.detail.items;
+
+		const payload = ipads.map((pad, index) => ({
+			id: pad.id,
+			position: index
+		}));
+
+		await fetch('/admin/repairs?type=ipad', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload)
+		});
+		await invalidateAll();
+	}
 </script>
 
 <h1 class="text-3xl font-bold mb-6">Repair Pricing</h1>
@@ -64,8 +104,15 @@
 
 <!-- Lists -->
 {#if tab === 'iphone'}
-<ul class="space-y-4">
-  {#each filteredIphones as phone}
+<ul class="space-y-4"
+	use:dndzone={{
+		items: filteredIphones,
+		flipDurationMs: 150,
+		dragDisabled: search.length > 0
+	}}
+	on:consider={(e) => (iphones = e.detail.items)}
+	on:finalize={handleIphoneReorder}>
+  {#each filteredIphones as phone (phone.id)}
     <li class="bg-white p-4 rounded-xl shadow-md">
       <div class="flex-1">
 		<div class="flex items-center justify-between">
@@ -112,8 +159,15 @@
   {/each}
 </ul>
 {:else}
-	<ul class="space-y-4">
-  {#each filteredIpads as pad}
+	<ul class="space-y-4"
+	use:dndzone={{
+		items: filteredIpads,
+		flipDurationMs: 150,
+		dragDisabled: search.length > 0
+	}}
+	on:consider={(e) => (ipads = e.detail.items)}
+	on:finalize={handleIpadReorder}>
+  {#each filteredIpads as pad (pad.id)}
     <li class="bg-white p-4 rounded-xl shadow-md gap-7">
       <div class="flex-1">
         <div class="flex items-center justify-between">
@@ -223,7 +277,7 @@
 			</h2>
 
 			<label class="block">
-				<span class="text-sm">Name</span>
+				<span class="text-sm">Names</span>
 				<input
 					name="name"
 					required

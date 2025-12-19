@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { iphonerepair, ipadrepair } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 export const load = async () => {
 	return {
@@ -22,8 +22,13 @@ export const actions = {
 	addIphone: async ({ request }) => {
 		const form = await request.formData();
 
+		const [{ max }] = await db
+			.select({ max: sql<number>`max(${iphonerepair.position})` })
+			.from(iphonerepair);
+
 		await db.insert(iphonerepair).values({
 			name: String(form.get('name')),
+			position: (max ?? -1) + 1,
 			...parsePrices(form, [
 				'screenprice',
 				'screenproprice',
@@ -43,8 +48,6 @@ export const actions = {
 	updateIphone: async ({ request }) => {
 		const form = await request.formData();
 		const id = Number(form.get('id'));
-
-        console.log(id)
 
 		await db
 			.update(iphonerepair)
@@ -67,8 +70,13 @@ export const actions = {
 	addIpad: async ({ request }) => {
 		const form = await request.formData();
 
+		const [{ max }] = await db
+			.select({ max: sql<number>`max(${iphonerepair.position})` })
+			.from(iphonerepair);
+
 		await db.insert(ipadrepair).values({
 			name: String(form.get('name')),
+			position: (max ?? -1) + 1,
 			...parsePrices(form, [
 				'screenprice',
 				'batteryprice',

@@ -1,11 +1,10 @@
 import * as auth from '$lib/server/auth';
 import { fail, redirect } from '@sveltejs/kit';
-import { getRequestEvent } from '$app/server';
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
+import { requireUser } from '$lib/server/auth';
 
-export const load: PageServerLoad = async () => {
-	const user = requireLogin();
-	return { user };
+export const load = async () => {
+    return { user: requireUser() };
 };
 
 export const actions: Actions = {
@@ -19,13 +18,3 @@ export const actions: Actions = {
 		return redirect(302, '/login');
 	}
 };
-
-function requireLogin() {
-	const { locals } = getRequestEvent();
-
-	if (!locals.user) {
-		return redirect(302, '/login');
-	}
-
-	return locals.user;
-}

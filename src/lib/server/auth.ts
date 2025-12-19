@@ -4,6 +4,8 @@ import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { redirect } from '@sveltejs/kit';
+import { getRequestEvent } from '$app/server';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -15,35 +17,27 @@ export function generateSessionToken() {
 	return token;
 }
 
-export async function createSession(
-  token: string,
-  userId: string,
-  remember: boolean
-) {
-  const sessionId = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(token))
-  );
+export async function createSession(token: string, userId: string, remember: boolean) {
+	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 
-  const expiresAt = remember === true
-    ? new Date(Date.now() + DAY_IN_MS * 30)
-    : new Date(Date.now() + DAY_IN_MS * 1);
+	const expiresAt = remember === true ? new Date(Date.now() + DAY_IN_MS * 30) : new Date(Date.now() + DAY_IN_MS * 1);
 
-  const session: table.Session = {
-    id: sessionId,
-    userId,
-    expiresAt,
-	rememberMe: remember
-  };
+	const session: table.Session = {
+		id: sessionId,
+		userId,
+		expiresAt,
+		rememberMe: remember
+	};
 
-  await db.insert(table.session).values(session);
-  return session;
+	await db.insert(table.session).values(session);
+	return session;
 }
 
 export async function validateSessionToken(token: string) {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const [result] = await db
 		.select({
-			user: { guid: table.user.guid, username: table.user.username },
+			user: table.user,
 			session: table.session
 		})
 		.from(table.session)
@@ -87,4 +81,24 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 	event.cookies.delete(sessionCookieName, {
 		path: '/'
 	});
+}
+
+export function requireUser() {
+    const { locals } = getRequestEvent();
+
+    if (!locals.user) {
+        throw redirect(303, '/login');
+    }
+
+    return locals.user;
+}
+
+export function requireAdmin() {
+    const { locals } = getRequestEvent();
+
+    if (!locals.user || locals.user.role !== 'admin') {
+        throw redirect(303, '/login');
+    }
+
+    return locals.user;
 }

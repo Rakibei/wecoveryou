@@ -23,10 +23,10 @@ export const actions: Actions = {
 		let rememberCheck: boolean;
 
 		if (!validateUsername(username)) {
-			return fail(400, { error: 'Invalid username (min 3, max 31 characters, alphanumeric only)' });
+			return fail(400, { error: 'Invalid username' });
 		}
 		if (!validatePassword(password)) {
-			return fail(400, { error: 'Invalid password (min 6, max 255 characters)' });
+			return fail(400, { error: 'Invalid password' });
 		}
 		if (remember === 'on') {
 			rememberCheck = true;

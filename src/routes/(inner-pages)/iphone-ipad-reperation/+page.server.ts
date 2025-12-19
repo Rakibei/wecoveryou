@@ -3,8 +3,8 @@ import { db } from '$lib/server/db';
 import { iphonerepair, ipadrepair } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async () => {
-	const iphonerepairs = await db.select().from(iphonerepair);
-	const ipadrepairs = await db.select().from(ipadrepair);
+	const iphonerepairs = await db.select().from(iphonerepair).orderBy(iphonerepair.position);
+	const ipadrepairs = await db.select().from(ipadrepair).orderBy(ipadrepair.position);
 
 	return {
 		iphonerepairs: iphonerepairs,

@@ -21,7 +21,6 @@ export const actions: Actions = {
 		const confirmPassword = formData.get('confirm');
 		const email = formData.get('email');
 
-
 		if (!validateUsername(username)) {
 			return fail(400, { error: 'Invalid username' });
 		}
@@ -45,7 +44,7 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db.insert(table.user).values({ guid: guid, username, passwordHash, email});
+			await db.insert(table.user).values({ guid: guid, username, passwordHash, email });
 		} catch {
 			return fail(500, { error: 'An error has occurred' });
 		}

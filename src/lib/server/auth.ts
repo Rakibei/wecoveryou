@@ -15,35 +15,27 @@ export function generateSessionToken() {
 	return token;
 }
 
-export async function createSession(
-  token: string,
-  userId: string,
-  remember: boolean
-) {
-  const sessionId = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(token))
-  );
+export async function createSession(token: string, userId: string, remember: boolean) {
+	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 
-  const expiresAt = remember === true
-    ? new Date(Date.now() + DAY_IN_MS * 30)
-    : new Date(Date.now() + DAY_IN_MS * 1);
+	const expiresAt = remember === true ? new Date(Date.now() + DAY_IN_MS * 30) : new Date(Date.now() + DAY_IN_MS * 1);
 
-  const session: table.Session = {
-    id: sessionId,
-    userId,
-    expiresAt,
-	rememberMe: remember
-  };
+	const session: table.Session = {
+		id: sessionId,
+		userId,
+		expiresAt,
+		rememberMe: remember
+	};
 
-  await db.insert(table.session).values(session);
-  return session;
+	await db.insert(table.session).values(session);
+	return session;
 }
 
 export async function validateSessionToken(token: string) {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const [result] = await db
 		.select({
-			user: { guid: table.user.guid, username: table.user.username },
+			user: table.user,
 			session: table.session
 		})
 		.from(table.session)

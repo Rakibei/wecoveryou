@@ -40,14 +40,14 @@
 		class="border-gray ml-auto rounded-md border p-2"
 	/>
 
-	<a title="Cart" id="cart" href="/">
+	<a title="Cart" id="cart" href="/kurv">
 		<i class="fa-solid fa-cart-shopping"></i>
 		<span>Beløb: 0,00 DKK</span>
 	</a>
 	<a title="User" id="user" href="/login">
 		<i class="fa-solid fa-user"></i>
 		{#if data.user}
-			<span>{data.user.username}</span>
+			<span>Profil</span>
 		{:else}
 			<span>Login</span>
 		{/if}

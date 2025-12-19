@@ -28,8 +28,8 @@
 	<div>
 		<h1 class="title">iPhone & iPad Reparation - Hurtigt & Professionelt</h1>
 		<p class="subtitle">
-			Hos Labtech tilbyder vi <strong>hurtige og pålidelige reparationer</strong> af iPhone og iPad - ofte på under én time.
-			Vi bruger kun kvalitetsreservedele, og med 17 butikker i Danmark er vi altid i nærheden.
+			Hos Labtech WeCoverYou tilbyder vi <strong>hurtige og pålidelige reparationer</strong> af iPhone og iPad - ofte på under
+			én time. Vi bruger kun kvalitetsreservedele, og med 17 butikker i Danmark er vi altid i nærheden.
 		</p>
 	</div>
 	<div class="mb-5 flex items-center gap-4 px-10">

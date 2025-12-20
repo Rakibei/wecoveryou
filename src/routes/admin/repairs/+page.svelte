@@ -70,18 +70,20 @@
 <div class="flex gap-4 mb-6">
 	<button
 		on:click={() => (tab = 'iphone')}
-		class="px-4 py-2 rounded-lg"
+		class="px-4 py-2 rounded-lg cursor-pointer"
 		class:bg-gray-900={tab === 'iphone'}
 		class:text-white={tab === 'iphone'}
+		class:hover:bg-gray-300={tab === 'ipad'}
 	>
 		iPhone
 	</button>
 
 	<button
 		on:click={() => (tab = 'ipad')}
-		class="px-4 py-2 rounded-lg"
+		class="px-4 py-2 rounded-lg cursor-pointer"
 		class:bg-gray-900={tab === 'ipad'}
 		class:text-white={tab === 'ipad'}
+		class:hover:bg-gray-300={tab === 'iphone'}
 	>
 		iPad
 	</button>
@@ -89,7 +91,7 @@
 
 <!-- Add button -->
 <button
-	class="mb-4 px-4 py-2 bg-green-600 text-white rounded-lg"
+	class="mb-4 px-4 py-2 bg-green-600 hover:bg-green-700 transition-colors text-white rounded-lg cursor-pointer"
 	on:click={() => (adding = tab)}
 >
 	+ Add {tab === 'iphone' ? 'iPhone' : 'iPad'}
@@ -126,6 +128,7 @@
           <table class="min-w-full text-sm text-left text-gray-900 border border-gray-200 rounded-lg">
             <thead class="bg-gray-100">
               <tr>
+                <th class="px-3 py-2">Base Price</th>
                 <th class="px-3 py-2">Screen</th>
                 <th class="px-3 py-2">Screen Pro</th>
                 <th class="px-3 py-2">Battery</th>
@@ -140,6 +143,7 @@
             </thead>
             <tbody>
               <tr class="bg-white">
+                <td class="px-3 py-2">{price(phone.baseprice)}</td>
                 <td class="px-3 py-2">{price(phone.screenprice)}</td>
                 <td class="px-3 py-2">{price(phone.screenproprice)}</td>
                 <td class="px-3 py-2">{price(phone.batteryprice)}</td>
@@ -181,6 +185,7 @@
           <table class="min-w-full text-sm text-left text-gray-900 border border-gray-200 rounded-lg">
             <thead class="bg-gray-100">
               <tr>
+                <th class="px-3 py-2">Base Price</th>
                 <th class="px-3 py-2">Screen</th>
                 <th class="px-3 py-2">Battery</th>
                 <th class="px-3 py-2">LCD</th>
@@ -192,6 +197,7 @@
             </thead>
             <tbody>
               <tr class="bg-white">
+                <td class="px-3 py-2">{price(pad.baseprice)}</td>
                 <td class="px-3 py-2">{price(pad.screenprice)}</td>
                 <td class="px-3 py-2">{price(pad.batteryprice)}</td>
                 <td class="px-3 py-2">{price(pad.lcdprice)}</td>
@@ -222,7 +228,7 @@
 					}
 				};
 			}}
-			class="bg-white p-6 rounded-xl w-full max-w-xl space-y-4"
+			class="bg-white p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
 		>
 			<input type="hidden" name="id" value={editing.item.id} />
 
@@ -230,26 +236,41 @@
 				Edit {editing.item.name}
 			</h2>
 
-			{#each Object.entries(editing.item) as [key, value]}
-				{#if key.endsWith('price')}
-					<label class="block">
-						<span class="text-sm capitalize">{key.replace('price', '')}</span>
-						<input
-							type="number"
-							step="1"
-							name={key}
-							value={value ?? ''}
-							class="w-full border rounded px-3 py-2"
-						/>
-					</label>
-				{/if}
-			{/each}
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<label class="block md:col-span-2">
+					<span class="text-sm capitalize">Name</span>
+					<input
+						type="text"
+						name="name"
+						value={editing.item.name}
+						class="w-full border rounded px-3 py-2"
+						required
+					/>
+				</label>
 
-			<div class="flex justify-end gap-2">
-				<button type="button" on:click={() => (editing = null)}>
+				{#each Object.entries(editing.item) as [key, value]}
+					{#if key.endsWith('price')}
+						<label class="block">
+							<span class="text-sm capitalize">
+								{key.replace('price', '')}
+							</span>
+							<input
+								type="number"
+								step="1"
+								name={key}
+								value={value ?? ''}
+								class="w-full border rounded px-3 py-2"
+							/>
+						</label>
+					{/if}
+				{/each}
+			</div>
+
+			<div class="flex justify-end gap-2 mt-3">
+				<button class="hover:bg-gray-200 transition-colors px-4 py-2 rounded" type="button" on:click={() => (editing = null)}>
 					Cancel
 				</button>
-				<button class="bg-blue-600 text-white px-4 py-2 rounded">
+				<button class="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-4 py-2 rounded">
 					Save
 				</button>
 			</div>
@@ -270,14 +291,15 @@
 					}
 				};
 			}}
-			class="bg-white p-6 rounded-xl w-full max-w-xl space-y-4"
+			class="bg-white p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
 		>
 			<h2 class="text-xl font-bold">
 				Add {adding === 'iphone' ? 'iPhone' : 'iPad'}
 			</h2>
 
-			<label class="block">
-				<span class="text-sm">Names</span>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<label class="block md:col-span-2">
+				<span class="text-sm">Name</span>
 				<input
 					name="name"
 					required
@@ -287,6 +309,7 @@
 
 			{#if adding === 'iphone'}
 				{#each [
+					'baseprice',
 					'screenprice',
 					'screenproprice',
 					'batteryprice',
@@ -299,17 +322,21 @@
 					'speakerprice'
 				] as field}
 					<label class="block">
-						<span class="text-sm capitalize">{field.replace('price', '')}</span>
+						<span class="text-sm capitalize">
+							{field.replace('price', '')}
+						</span>
 						<input
 							type="number"
 							step="1"
 							name={field}
+							required={field === 'baseprice'}
 							class="w-full border rounded px-3 py-2"
 						/>
 					</label>
 				{/each}
 			{:else}
 				{#each [
+					'baseprice',
 					'screenprice',
 					'batteryprice',
 					'lcdprice',
@@ -319,22 +346,27 @@
 					'chargeportprice'
 				] as field}
 					<label class="block">
-						<span class="text-sm capitalize">{field.replace('price', '')}</span>
+						<span class="text-sm capitalize">
+							{field.replace('price', '')}
+						</span>
 						<input
 							type="number"
 							step="1"
 							name={field}
+							required={field === 'baseprice'}
 							class="w-full border rounded px-3 py-2"
 						/>
 					</label>
 				{/each}
-			{/if}
+			{/if}		
+		</div>
 
-			<div class="flex justify-end gap-2">
-				<button type="button" on:click={() => (adding = null)}>
+
+			<div class="flex justify-end gap-2 mt-3">
+				<button class="hover:bg-gray-200 transition-colors px-4 py-2 rounded" type="button" on:click={() => (adding = null)}>
 					Cancel
 				</button>
-				<button class="bg-green-600 text-white px-4 py-2 rounded">
+				<button class="bg-green-600 hover:bg-green-700 transition-colors text-white px-4 py-2 rounded">
 					Add
 				</button>
 			</div>

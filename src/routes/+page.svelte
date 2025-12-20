@@ -13,7 +13,7 @@
 			</nav>
 			<nav id="productNav">
 				<a href="/iphone-ipad-reperation">Reperation</a>
-				<a href="/telefon-salg">Sælg din telefon</a>
+				<a href="/enhed-salg">Sælg din telefon</a>
 			</nav>
 		</div>
 		<div id="mainContent">

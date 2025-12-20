@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, timestamp, boolean, integer } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, text, timestamp, boolean, integer, numeric } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('users', {
 	id: serial('id').primaryKey(),
@@ -16,29 +16,31 @@ export const iphonerepair = pgTable('phonerepair', {
 	id: serial('id').primaryKey(),
 	position: integer('position').notNull().default(0),
 	name: text('name').unique().notNull(),
-	screenprice: text('screen'),
-	screenproprice: text('screenpro'),
-	batteryprice: text('battery'),
-	backcameraprice: text('backcamera'),
-	backcameraglassprice: text('backcameraglass'),
-	frontcameraprice: text('frontcamera'),
-	backcoverframeprice: text('backcoverframe'),
-	backcoverglassprice: text('backcoverglass'),
-	chargeportprice: text('chargeport'),
-	speakerprice: text('speaker')
+	baseprice: numeric('base', { precision: 12, scale: 2 }).notNull(),
+	screenprice: numeric('screen', { precision: 12, scale: 2 }),
+	screenproprice: numeric('screenpro', { precision: 12, scale: 2 }),
+	batteryprice: numeric('battery', { precision: 12, scale: 2 }),
+	backcameraprice: numeric('backcamera', { precision: 12, scale: 2 }),
+	backcameraglassprice: numeric('backcameraglass', { precision: 12, scale: 2 }),
+	frontcameraprice: numeric('frontcamera', { precision: 12, scale: 2 }),
+	backcoverframeprice: numeric('backcoverframe', { precision: 12, scale: 2 }),
+	backcoverglassprice: numeric('backcoverglass', { precision: 12, scale: 2 }),
+	chargeportprice: numeric('chargeport', { precision: 12, scale: 2 }),
+	speakerprice: numeric('speaker', { precision: 12, scale: 2 })
 });
 
 export const ipadrepair = pgTable('ipadrepair', {
 	id: serial('id').primaryKey(),
 	position: integer('position').notNull().default(0),
 	name: text('name').unique().notNull(),
-	screenprice: text('screen'),
-	batteryprice: text('battery'),
-	lcdprice: text('lcd'),
-	homebuttonprice: text('homebutton'),
-	frontcameraprice: text('frontcamera'),
-	backcameraprice: text('backcamera'),
-	chargeportprice: text('chargeport')
+	baseprice: numeric('base', { precision: 12, scale: 2 }).notNull(),
+	screenprice: numeric('screen', { precision: 12, scale: 2 }),
+	batteryprice: numeric('battery', { precision: 12, scale: 2 }),
+	lcdprice: numeric('lcd', { precision: 12, scale: 2 }),
+	homebuttonprice: numeric('homebutton', { precision: 12, scale: 2 }),
+	frontcameraprice: numeric('frontcamera', { precision: 12, scale: 2 }),
+	backcameraprice: numeric('backcamera', { precision: 12, scale: 2 }),
+	chargeportprice: numeric('chargeport', { precision: 12, scale: 2 })
 });
 
 export const session = pgTable('session', {

@@ -9,12 +9,18 @@ export const load = async () => {
 	};
 };
 
-function parsePrices(formData: FormData, fields: string[]) {
-	const data: Record<string, number | null> = {};
+function parsePrices<T extends readonly string[]>(
+	formData: FormData,
+	fields: T
+): { [K in T[number]]: string | null } {
+	const data = {} as { [K in T[number]]: string | null };
+
 	for (const field of fields) {
-		const value = formData.get(field);
-		data[field] = value === '' ? null : Number(value);
+		const key = field as T[number];
+		const value = formData.get(key);
+		data[key] = value === '' || value === null ? null : String(value);
 	}
+
 	return data;
 }
 
@@ -29,6 +35,7 @@ export const actions = {
 		await db.insert(iphonerepair).values({
 			name: String(form.get('name')),
 			position: (max ?? -1) + 1,
+			baseprice: String(form.get('baseprice')),
 			...parsePrices(form, [
 				'screenprice',
 				'screenproprice',
@@ -40,18 +47,22 @@ export const actions = {
 				'backcoverglassprice',
 				'chargeportprice',
 				'speakerprice'
-			])
+			] as const)
 		});
     return { success: true };
 	},
 
 	updateIphone: async ({ request }) => {
-		const form = await request.formData();
-		const id = Number(form.get('id'));
+	const form = await request.formData();
+	const id = Number(form.get('id'));
+	const name = String(form.get('name'));
 
-		await db
-			.update(iphonerepair)
-			.set(parsePrices(form, [
+	await db
+		.update(iphonerepair)
+		.set({
+			name,
+			...parsePrices(form, [
+				'baseprice',
 				'screenprice',
 				'screenproprice',
 				'batteryprice',
@@ -62,21 +73,23 @@ export const actions = {
 				'backcoverglassprice',
 				'chargeportprice',
 				'speakerprice'
-			]))
-			.where(eq(iphonerepair.id, id));
-    return { success: true };
+			])
+		})
+		.where(eq(iphonerepair.id, id));
+		return { success: true };
 	},
 
 	addIpad: async ({ request }) => {
 		const form = await request.formData();
 
 		const [{ max }] = await db
-			.select({ max: sql<number>`max(${iphonerepair.position})` })
-			.from(iphonerepair);
+			.select({ max: sql<number>`max(${ipadrepair.position})` })
+			.from(ipadrepair);
 
 		await db.insert(ipadrepair).values({
 			name: String(form.get('name')),
 			position: (max ?? -1) + 1,
+			baseprice: String(form.get('baseprice')),
 			...parsePrices(form, [
 				'screenprice',
 				'batteryprice',
@@ -85,7 +98,7 @@ export const actions = {
 				'frontcameraprice',
 				'backcameraprice',
 				'chargeportprice'
-			])
+			] as const)
 		});
     return { success: true };
 	},
@@ -93,10 +106,14 @@ export const actions = {
 	updateIpad: async ({ request }) => {
 		const form = await request.formData();
 		const id = Number(form.get('id'));
+		const name = String(form.get('name'));
 
 		await db
 			.update(ipadrepair)
-			.set(parsePrices(form, [
+			.set({
+			name,
+			...parsePrices(form, [
+				'baseprice',
 				'screenprice',
 				'batteryprice',
 				'lcdprice',
@@ -104,7 +121,8 @@ export const actions = {
 				'frontcameraprice',
 				'backcameraprice',
 				'chargeportprice'
-			]))
+			])
+		})
 			.where(eq(ipadrepair.id, id));
     return { success: true };
 	}
